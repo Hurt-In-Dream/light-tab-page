@@ -4,3 +4,7 @@ dist
 dist-ssr
 *.local
 pnpm-lock.yaml
+*.crx
+*.zip
+*.pem
+build-crx.js

@@ -35,7 +35,19 @@
         <a-select-option :value="SearchSuggestion.baidu"> 百度 API </a-select-option>
         <a-select-option :value="SearchSuggestion.bing"> Bing API </a-select-option>
         <a-select-option :value="SearchSuggestion.google"> Google API </a-select-option>
+        <a-select-option :value="SearchSuggestion.custom"> 自定义 </a-select-option>
       </a-select>
+    </setting-item>
+
+    <setting-item
+      v-if="setting.suggestion === SearchSuggestion.custom"
+      :lable="t('search.customSuggestion')"
+    >
+      <a-input
+        v-model:value="setting.customSuggestionUrl"
+        :placeholder="t('search.customSuggestionPlaceholder')"
+        allow-clear
+      />
     </setting-item>
 
     <setting-item :lable="t('search.searchRound')">
@@ -52,6 +64,34 @@
 
     <setting-item :lable="t('search.showEngineSelet')" horizontal>
       <a-switch v-model:checked="setting.showEngineSelect" />
+    </setting-item>
+
+    <setting-item :lable="t('search.customLogo')">
+      <div class="custom-logo-setting">
+        <a-input
+          v-model:value="setting.customLogoUrl"
+          :placeholder="t('search.customLogoPlaceholder')"
+          allow-clear
+          style="flex: 1"
+        />
+        <a-upload
+          :show-upload-list="false"
+          :customRequest="uploadLogoImage"
+          accept="image/*"
+        >
+          <a-button size="small" type="primary">上传</a-button>
+        </a-upload>
+      </div>
+    </setting-item>
+
+    <setting-item horizontal>
+      <template #lable>
+        <span>
+          {{ t('search.liquidGlass') }}
+          <a-tag color="processing">iOS 26</a-tag>
+        </span>
+      </template>
+      <a-switch v-model:checked="setting.liquidGlass" />
     </setting-item>
   </div>
 
@@ -87,6 +127,10 @@ const isOpenPageByBlank = computed({
     setting.value.openPageTarget = openPageTarget
   }
 })
+
+function uploadLogoImage(e: any) {
+  settingStore.uploadLogoImage(e.file)
+}
 </script>
 
 <style lang="less">
@@ -95,6 +139,12 @@ const isOpenPageByBlank = computed({
     color: var(--primary-color);
     margin-left: 4px;
     font-size: 12px;
+  }
+
+  .custom-logo-setting {
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
   }
 }
 </style>

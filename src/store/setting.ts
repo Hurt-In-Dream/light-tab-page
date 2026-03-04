@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 import { copy, isEmpty, uuid } from "@/utils/common"
-import { wallpaperStore } from "@/plugins/localforage"
+import { wallpaperStore, logoStore } from "@/plugins/localforage"
 import { isImageFile } from "@/utils/img"
 import { usePreferredDark } from "@/utils/use"
 import { getDailyWallpaperUrl } from "@/api/bing"
@@ -45,6 +45,7 @@ export default defineStore("setting", {
       id: "",
       type: BackgroundType.None,
       url: "",
+      customUrl: "http://pic.wzkws116.xyz/pic?img=ua",
       blur: 0,
       maskColor: "#000",
       maskOpacity: 0,
@@ -57,7 +58,10 @@ export default defineStore("setting", {
       showEngineSelect: true,
       searchInputRadius: 4,
       useSearchEngines: ["bing", "google", "baidu"],
-      suggestion: SearchSuggestion.none
+      suggestion: SearchSuggestion.none,
+      liquidGlass: false,
+      customLogoUrl: "",
+      customSuggestionUrl: ""
     },
     topSite: {
       enable: false,
@@ -209,6 +213,48 @@ export default defineStore("setting", {
       for (let item in data) {
         if (item === BACKUP_FILE_MARK) continue
         localStorage.setItem(item, data[item])
+      }
+    },
+
+    /**
+     * 上传自定义Logo图片
+     */
+    async uploadLogoImage(imageFile: File) {
+      if (!isImageFile(imageFile)) throw new Error("这不是一个图片文件")
+
+      const id = uuid()
+      const url = URL.createObjectURL(imageFile)
+      const url_old = this.search.customLogoUrl
+
+      // 清除旧Logo
+      await logoStore.clear()
+      if (url_old && isObjectURL(url_old)) {
+        URL.revokeObjectURL(url_old)
+      }
+
+      // 保存到IndexedDB
+      await logoStore.setItem<Blob>(id, imageFile)
+      this.search.customLogoUrl = url
+    },
+
+    /**
+     * 重新加载自定义Logo
+     */
+    async reloadLogoImage() {
+      const url = this.search.customLogoUrl
+      if (!url || !isObjectURL(url)) return
+
+      // ObjectURL 过期后需要从IndexedDB重建
+      const keys = await logoStore.keys()
+      if (keys.length === 0) return
+
+      const id = keys[0]
+      const file = await logoStore.getItem<Blob>(id)
+      if (file && isImageFile(file)) {
+        this.search.customLogoUrl = URL.createObjectURL(file)
+      } else {
+        this.search.customLogoUrl = ""
+        await logoStore.removeItem(id)
       }
     }
   }

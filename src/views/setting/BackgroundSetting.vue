@@ -7,6 +7,7 @@
         <a-radio :value="BackgroundType.Bing" :disabled="!isExtension" v-permis="Permis.bing">
           {{ t("background.wallpaper.bing") }}
         </a-radio>
+        <a-radio :value="BackgroundType.Custom">{{ t("background.wallpaper.custom") }}</a-radio>
       </a-radio-group>
     </setting-item>
 
@@ -28,6 +29,17 @@
           <plus-outlined />
         </div>
       </a-upload>
+    </setting-item>
+
+    <setting-item
+      v-if="background.type === BackgroundType.Custom"
+      :lable="t('background.wallpaper.customUrl')"
+    >
+      <a-input
+        v-model:value="background.customUrl"
+        :placeholder="t('background.wallpaper.customUrlPlaceholder')"
+        allow-clear
+      />
     </setting-item>
 
     <template v-if="background.type !== BackgroundType.None">
@@ -75,6 +87,20 @@ watch(
   type => {
     if (type === BackgroundType.Bing) {
       store.loadBingDailyWallpaper()
+    }
+    // 自定义壁纸：使用customUrl作为url
+    if (type === BackgroundType.Custom) {
+      background.value.url = background.value.customUrl || "http://pic.wzkws116.xyz/pic?img=ua"
+    }
+  }
+)
+
+// 当customUrl变更时同步到url
+watch(
+  () => background.value.customUrl,
+  url => {
+    if (background.value.type === BackgroundType.Custom) {
+      background.value.url = url || "http://pic.wzkws116.xyz/pic?img=ua"
     }
   }
 )

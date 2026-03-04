@@ -9,7 +9,7 @@ import {
 import { RuleDataMap, Rule, Rules, RuleData } from "@/types/rule"
 import { AnalyzeUrl } from "@/types/analyze"
 import { deepClone, isEmpty } from "@/utils/common"
-import { getBaiduSuggestion, getBingSuggestion, getGoogleSuggestion } from "@/api/suggestion"
+import { getBaiduSuggestion, getBingSuggestion, getGoogleSuggestion, getCustomSuggestion } from "@/api/suggestion"
 import useSettingStore from "./setting"
 
 export interface SearchState {
@@ -140,6 +140,10 @@ export default defineStore("search", {
           return getBingSuggestion(searchText)
         case SearchSuggestion.google:
           return getGoogleSuggestion(searchText)
+        case SearchSuggestion.custom:
+          return search.customSuggestionUrl
+            ? getCustomSuggestion(searchText, search.customSuggestionUrl)
+            : []
         default:
           return []
       }

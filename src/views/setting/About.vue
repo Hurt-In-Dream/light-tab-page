@@ -8,16 +8,18 @@
 
     <ul class="social">
       <li v-for="(url, name) of social">
-        <a :href="url">{{ name }}</a>
+        <a :href="url" target="_blank">{{ name }}</a>
       </li>
     </ul>
 
     <p class="copyright">
-      <a href="https://github.com/Devifish/light-tab-page/blob/master/LICENSE">
+      <a href="https://github.com/Hurt-In-Dream/light-tab-page/blob/master/LICENSE" target="_blank">
         {{ t("about.license") }}
       </a>
       <br />
-      Copyright © 2023 Devifish. All rights reserved.
+      Copyright © 2023 Devifish. Modified by HurtInDream.
+      <br />
+      All rights reserved.
     </p>
   </footer>
 </template>
@@ -32,9 +34,10 @@ const appName = import.meta.env.npm_package_name
 const appVersion = import.meta.env.npm_package_version
 
 const social = computed<Record<string, string>>(() => ({
-  [t("about.projectHome")]: "https://github.com/Devifish/light-tab-page",
-  [t("about.changelog")]: "https://github.com/Devifish/light-tab-page/blob/master/CHANGELOG.md",
-  [t("about.feedback")]: "https://github.com/Devifish/light-tab-page/issues"
+  [t("about.projectHome")]: "https://github.com/Hurt-In-Dream/light-tab-page",
+  [t("about.changelog")]: "https://github.com/Hurt-In-Dream/light-tab-page/blob/master/CHANGELOG.md",
+  [t("about.feedback")]: "https://github.com/Hurt-In-Dream/light-tab-page/issues",
+  [t("about.homepage")]: "https://hurtindream.de"
 }))
 </script>
 

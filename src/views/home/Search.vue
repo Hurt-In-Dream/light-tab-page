@@ -1,7 +1,7 @@
 <template>
-  <div class="search-warp">
+  <div class="search-warp" :class="{ 'liquid-glass': searchSetting.liquidGlass }">
     <div v-if="searchSetting.showEngineIcon" class="search-logo">
-      <img :src="search.currentUseEngine.icon" class="logo" alt="logo" draggable="false" />
+      <img :src="logoSrc" class="logo" alt="logo" draggable="false" />
     </div>
     <div class="search-input" ref="searchInput">
       <a-auto-complete
@@ -46,8 +46,9 @@
 import { useSettingStore, useSearchStore } from "@/store"
 import { debounce } from "@/utils/async"
 import { isEmpty } from "@/utils/common"
+import { isObjectURL } from "@/utils/browser"
 import { storeToRefs } from "pinia"
-import { ref, computed, watch } from "vue"
+import { ref, computed, watch, onMounted } from "vue"
 import { useI18n } from "vue-i18n"
 
 interface SearchProps {
@@ -68,6 +69,23 @@ const props = defineProps<SearchProps>()
 const showComplete = ref(false),
   searchInputRadius = computed(() => `${searchSetting.value.searchInputRadius}px`),
   searchSuggestion = ref<SuggestionItem[]>()
+
+// 自定义Logo：优先使用自定义URL，否则使用搜索引擎图标
+const logoSrc = computed(() => {
+  const customUrl = searchSetting.value.customLogoUrl
+  if (customUrl && !isEmpty(customUrl)) {
+    return customUrl
+  }
+  return search.currentUseEngine?.icon
+})
+
+// 页面加载时检查Logo是否需要从IndexedDB重新加载
+onMounted(async () => {
+  const url = searchSetting.value.customLogoUrl
+  if (url && isObjectURL(url)) {
+    await setting.reloadLogoImage()
+  }
+})
 
 // 搜索内容
 const searchText = ref(props.value)
@@ -180,6 +198,41 @@ function onSwitchEngines(e: KeyboardEvent) {
       }
     }
   }
+
+  // 液态玻璃效果 (iOS 26 Style)
+  &.liquid-glass {
+    .search-input {
+      .ant-input,
+      .ant-input-group-addon {
+        background-color: rgba(255, 255, 255, 0.25) !important;
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border-color: rgba(255, 255, 255, 0.3) !important;
+        transition: all 0.3s ease;
+      }
+
+      .ant-input {
+        color: inherit;
+
+        &::placeholder {
+          color: rgba(140, 140, 140, 0.8);
+        }
+      }
+
+      .ant-input-search-button {
+        background-color: rgba(255, 255, 255, 0.3) !important;
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border-color: rgba(255, 255, 255, 0.3) !important;
+        color: inherit;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.45) !important;
+        }
+      }
+    }
+  }
 }
 
 [data-theme="dark"] {
@@ -192,6 +245,27 @@ function onSwitchEngines(e: KeyboardEvent) {
     // 深色模式搜索按钮半透明
     .ant-input-search-button {
       opacity: 0.7;
+    }
+  }
+
+  // 深色模式下的液态玻璃效果
+  .search-warp.liquid-glass {
+    .search-input {
+      .ant-input,
+      .ant-input-group-addon {
+        background-color: rgba(30, 30, 30, 0.45) !important;
+        border-color: rgba(255, 255, 255, 0.12) !important;
+      }
+
+      .ant-input-search-button {
+        background-color: rgba(50, 50, 50, 0.5) !important;
+        border-color: rgba(255, 255, 255, 0.12) !important;
+        opacity: 1;
+
+        &:hover {
+          background-color: rgba(70, 70, 70, 0.6) !important;
+        }
+      }
     }
   }
 }

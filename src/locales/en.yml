@@ -11,6 +11,8 @@ theme:
   setting: "Theme Setting"
   mode: "Theme mode"
   primaryColor: "Primary color"
+  customColor: "Custom color"
+  customColorPlaceholder: "Enter HEX color, e.g. #FF5722"
   wallpaperPalette: "Using the wallpaper palette"
 
 search:
@@ -22,6 +24,12 @@ search:
   newTabOpen: "Open search results in a new tab"
   showEngineIcon: "Show search engine icon above the search box"
   showEngineSelet: "Show search engine drop-down in front of the search box"
+  liquidGlass: "Liquid Glass Effect"
+  liquidGlassTip: "iOS 26-style frosted glass search bar"
+  customLogo: "Custom Search Logo"
+  customLogoPlaceholder: "Enter icon URL"
+  customSuggestion: "Custom Suggestion API URL"
+  customSuggestionPlaceholder: "Use {keyword} as search term placeholder"
 
 background:
   setting: "Background Setting"
@@ -30,7 +38,10 @@ background:
     none: "None"
     local: "Local"
     bing: "Bing wallpaper"
+    custom: "Custom"
     upload: "Upload wallpaper"
+    customUrl: "Wallpaper URL"
+    customUrlPlaceholder: "Enter image URL"
   blur: "Blur"
   maskOpacity: "Mask opacity"
   wallpaperDark: "Make the wallpaper darker in dark mode"
@@ -72,6 +83,7 @@ about:
   projectHome: "Project Home"
   changelog: "Changelog"
   feedback: "Feedback"
+  homepage: "My Homepage"
   license: "Released under the MIT License"
 
 popup:

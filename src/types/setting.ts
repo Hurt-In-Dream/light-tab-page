@@ -7,7 +7,8 @@ export enum ThemeMode {
 export enum BackgroundType {
   None,
   Local,
-  Bing
+  Bing,
+  Custom
 }
 
 export enum LanguageType {
@@ -21,6 +22,7 @@ export interface BackgroundSetting {
   id: string | null
   type?: BackgroundType
   url: string | null
+  customUrl?: string
   blur?: number
   maskColor?: String
   maskOpacity?: number

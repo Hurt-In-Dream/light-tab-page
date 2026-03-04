@@ -11,6 +11,8 @@ theme:
   setting: "主题设置"
   mode: "主题模式"
   primaryColor: "基础颜色"
+  customColor: "自定义色号"
+  customColorPlaceholder: "输入HEX色号，例如 #FF5722"
   wallpaperPalette: "使用壁纸调色板"
 
 search:
@@ -22,6 +24,12 @@ search:
   newTabOpen: "在新标签页中打开搜索结果"
   showEngineIcon: "在搜索框上方显示搜索引擎图标"
   showEngineSelet: "在搜索框前添加搜索引擎下拉列表"
+  liquidGlass: "液态玻璃效果"
+  liquidGlassTip: "仿 iOS 26 风格的磨砂玻璃搜索框"
+  customLogo: "自定义搜索Logo"
+  customLogoPlaceholder: "输入图标URL地址"
+  customSuggestion: "自定义建议接口URL"
+  customSuggestionPlaceholder: "URL中用 {keyword} 代替搜索词"
 
 background:
   setting: "背景设置"
@@ -30,7 +38,10 @@ background:
     none: "无"
     local: "本地图片"
     bing: "Bing每日壁纸"
+    custom: "自定义"
     upload: "上传壁纸"
+    customUrl: "壁纸地址"
+    customUrlPlaceholder: "输入图片URL地址"
   blur: "模糊强度"
   maskOpacity: "遮罩不透明度"
   wallpaperDark: "在深色模式下使壁纸更暗"
@@ -72,6 +83,7 @@ about:
   projectHome: "项目地址"
   changelog: "更新日志"
   feedback: "问题反馈"
+  homepage: "我的主页"
   license: "遵循 MIT 开源协议"
 
 popup:

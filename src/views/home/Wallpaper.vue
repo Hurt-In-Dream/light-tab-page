@@ -29,15 +29,18 @@ const maskOpacity = computed(() => {
     : maskOpacity
 })
 
-// 如果 URL无效则重新加载
-const verifyBackground = await verifyImageUrl(background.value.url!)
-if (!verifyBackground) {
-  await settingStore.reloadBackgroundImage()
-}
-
-// 加载Bing每日壁纸
-if (background.value.type === BackgroundType.Bing) {
+// 自定义壁纸：直接使用customUrl，无需校验本地Blob
+if (background.value.type === BackgroundType.Custom) {
+  background.value.url = background.value.customUrl || "http://pic.wzkws116.xyz/pic?img=ua"
+} else if (background.value.type === BackgroundType.Bing) {
+  // 加载Bing每日壁纸
   await settingStore.loadBingDailyWallpaper()
+} else {
+  // 如果 URL无效则重新加载（本地图片）
+  const verifyBackground = await verifyImageUrl(background.value.url!)
+  if (!verifyBackground) {
+    await settingStore.reloadBackgroundImage()
+  }
 }
 </script>
 

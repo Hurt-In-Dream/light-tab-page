@@ -1,12 +1,12 @@
 {
-  "name": "light-tab-page",
-  "version": "1.5.2",
+  "name": "light-tab-page-new",
+  "version": "2.0.0",
   "private": true,
-  "author": "Devifish",
+  "author": "Devifish, HurtInDream",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Devifish/light-tab-page"
+    "url": "https://github.com/Hurt-In-Dream/light-tab-page"
   },
   "scripts": {
     "dev": "vite",

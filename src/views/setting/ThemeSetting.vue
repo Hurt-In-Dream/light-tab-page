@@ -15,6 +15,27 @@
     <setting-item :lable="t('theme.primaryColor')">
       <color-radio v-model:value="theme.primaryColor" :colors="primaryColors" />
     </setting-item>
+    <setting-item :lable="t('theme.customColor')">
+      <div class="custom-color-input">
+        <a-input
+          v-model:value="customColorInput"
+          :placeholder="t('theme.customColorPlaceholder')"
+          allow-clear
+          style="width: 200px"
+          @pressEnter="applyCustomColor"
+        >
+          <template #prefix>
+            <div
+              class="color-preview"
+              :style="{ backgroundColor: isValidHex(customColorInput) ? customColorInput : '#ccc' }"
+            />
+          </template>
+        </a-input>
+        <a-button type="primary" size="small" :disabled="!isValidHex(customColorInput)" @click="applyCustomColor">
+          应用
+        </a-button>
+      </div>
+    </setting-item>
     <setting-item horizontal v-if="background.type === BackgroundType.Local">
       <template #lable>
         <span>
@@ -40,7 +61,7 @@ import DarkMode from "@/assets/dark-mode.svg"
 import { useSettingStore } from "@/store"
 import { useI18n } from "vue-i18n"
 import { storeToRefs } from "pinia"
-import { computed } from "vue"
+import { computed, ref } from "vue"
 import { isEmpty } from "@/utils/common"
 import { BackgroundType } from "@/types/setting"
 import { reactive } from "vue"
@@ -68,6 +89,18 @@ const settingStore = useSettingStore()
 const { theme, primaryColors, background } = storeToRefs(settingStore)
 const loading = reactive({ colorPalette: false })
 const isColorPalette = computed(() => !isEmpty(theme.value.colorPalette))
+
+const customColorInput = ref("")
+
+function isValidHex(color: string): boolean {
+  return /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(color)
+}
+
+function applyCustomColor() {
+  if (isValidHex(customColorInput.value)) {
+    theme.value.primaryColor = customColorInput.value
+  }
+}
 
 async function changeColorPalette(checked: any) {
   if (checked) {
@@ -100,6 +133,20 @@ async function changeColorPalette(checked: any) {
         bottom: 8px;
         right: 8px;
       }
+    }
+  }
+
+  .custom-color-input {
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+
+    .color-preview {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      border: 1px solid #d9d9d9;
+      transition: background-color 0.3s ease;
     }
   }
 }

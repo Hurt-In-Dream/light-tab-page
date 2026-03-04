@@ -59,3 +59,28 @@ export async function getGoogleSuggestion(keyword: string): Promise<string[]> {
     return []
   }
 }
+
+/**
+ * 自定义搜索建议接口
+ * URL 中使用 {keyword} 作为搜索词占位符
+ * 支持返回 JSON 数组或包含数组的对象
+ */
+export async function getCustomSuggestion(keyword: string, apiUrl: string): Promise<string[]> {
+  try {
+    const url = apiUrl.replace(/\{keyword\}/g, encodeURIComponent(keyword))
+    const { data } = await axios.get<any>(url, { responseType: "json" })
+
+    // 如果返回值是数组
+    if (Array.isArray(data)) {
+      // 可能是 [keyword, [suggestions...]] 格式
+      if (data.length >= 2 && Array.isArray(data[1])) {
+        return data[1].map((item: any) => String(item))
+      }
+      return data.map((item: any) => (typeof item === "string" ? item : String(item)))
+    }
+
+    return []
+  } catch {
+    return []
+  }
+}

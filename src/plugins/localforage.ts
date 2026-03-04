@@ -9,3 +9,8 @@ export const wallpaperStore = localForage.createInstance({
   ...COMMON_CONFIG,
   storeName: "wallpaper"
 })
+
+export const logoStore = localForage.createInstance({
+  ...COMMON_CONFIG,
+  storeName: "logo"
+})

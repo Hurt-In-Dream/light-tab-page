@@ -19,7 +19,8 @@ export enum SearchSuggestion {
   none,
   baidu,
   bing,
-  google
+  google,
+  custom
 }
 
 export interface SearchSetting {
@@ -30,6 +31,9 @@ export interface SearchSetting {
   searchInputRadius: number
   useSearchEngines: Array<string>
   suggestion: SearchSuggestion
+  liquidGlass: boolean
+  customLogoUrl: string
+  customSuggestionUrl: string
 }
 
 export interface HistoryItem {
